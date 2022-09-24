@@ -58,9 +58,15 @@ app.post('/api/notes', (req, res) => {
 });
 
 // existing note shown function
-app.get('/api/notes', (req, res) => {
-
+app.get('/api/notes/', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/notes.html'))
+    res.json(note)
 });
+
+// goes back to homepage
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/index.html'))
+})
 
 // write icon button going back to blank note function
 app.get('/api/notes', (req, res) => {
