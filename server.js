@@ -58,9 +58,11 @@ app.post('/api/notes', (req, res) => {
 });
 
 // existing note shown function
-app.get('/api/notes/', (req, res) => {
-    res.sendFile(path.join(__dirname, './public/notes.html'))
-    res.json(note)
+app.get('/api/notes', (req, res) => {
+    res.sendFile(path.join(__dirname, './db/db.json'))
+    res.json(path.join(__dirname, note))
+    console.log(note)
+    console.log(this)
 });
 
 // goes back to homepage
