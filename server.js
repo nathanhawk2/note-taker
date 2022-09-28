@@ -87,6 +87,6 @@ app.delete('/api/notes/:id', (req, res) => {
         });
 });
 
-app.listen(PORT, () => {
+app.listen(process.env.PORT, () => {
     console.log(`listening at http://localhost:${PORT}`);
 });
