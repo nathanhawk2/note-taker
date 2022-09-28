@@ -2,7 +2,7 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
-const { readAndAppend, readFromFile } = require('./utils/fsUtils');
+const { readAndAppend, readFromFile, writeToFile } = require('./utils/fsUtils');
 const { parse } = require('path');
 // const noteNew = require('express').Router();
 
@@ -42,13 +42,14 @@ app.get('/api/notes', (req, res) => {
 
 // save button
 app.post('/api/notes', (req, res) => {
-    const { title, text } = req.body;
+    const { title, text, noteId } = req.body;
     console.log(req.body)
 
     if (req.body) {
         const newNote = {
-            title,
-            text,
+            title: req.body.title,
+            text: req.body.text,
+            id: Math.floor(Math.random() * 200),
         };
         readAndAppend(newNote, './db/db.json');
         res.json('Note added succesfully!');
@@ -59,10 +60,8 @@ app.post('/api/notes', (req, res) => {
 
 // existing note shown function
 app.get('/api/notes', (req, res) => {
-    res.sendFile(path.join(__dirname, './db/db.json'))
-    res.json(path.join(__dirname, note))
-    console.log(note)
-    console.log(this)
+    db = JSON.parse(fs.readFileSync('./db/db.json', 'utf8'))
+    res.json(db)
 });
 
 // goes back to homepage
@@ -75,6 +74,17 @@ app.get('/api/notes', (req, res) => {
     res.sendFile(path.join(__dirname, '/public/assets/notes.html'))
 });
 
+// delete note
+app.delete('/api/notes/:id', (req, res) => {
+    const noteId = req.params.id;
+    readFromFile('./db/db.json')
+        .then((data) => JSON.parse(data))
+        .then((json) => {
+            const result = json.filter((notes) => notes.id !== noteId);
+            writeToFile('./db/db.json', result);
+            res.json(`Note ${noteId} has been deleted`)
+        });
+});
 
 app.listen(PORT, () => {
     console.log(`listening at http://localhost:${PORT}`);
