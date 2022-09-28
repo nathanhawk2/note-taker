@@ -1,10 +1,7 @@
 [
     {
         "title": "Sample Title",
-        "text": "Sample text"
-    },
-    {
-        "title": "asdf",
-        "text": "asdf"
+        "text": "Sample text",
+        "id": 12
     }
 ]
